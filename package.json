@@ -1,0 +1,46 @@
+{
+  "name": "@flp/nestjs-azure-service-bus",
+  "version": "1.0.0",
+  "description": "NestJS Azure Service Bus Microservice Transport & Server",
+  "main": "dist/index",
+  "types": "dist/index",
+  "author": "Filipe Campos",
+  "license": "UNLICENSED",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "compile": "tsc",
+    "prepublish": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^9.3.7",
+    "@nestjs/core": "^9.3.7",
+    "@nestjs/microservices": "^9.3.7",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0"
+  },
+  "devDependencies": {
+    "@azure/service-bus": "^7.8.0",
+    "@nestjs/common": "^9.3.7",
+    "@nestjs/core": "^9.3.7",
+    "@nestjs/microservices": "^9.3.7",
+    "@types/node": "^18.13.0",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^4.1.2",
+    "rxjs": "^7.8.0",
+    "typescript": "^4.9.5"
+  },
+  "keywords": [
+    "azure",
+    "cloud",
+    "service bus",
+    "AMQP",
+    "nestjs",
+    "microservice"
+  ]
+}

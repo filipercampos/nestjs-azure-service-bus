@@ -5,16 +5,19 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center"><a href="https://nestjs.com" target="_blank">NestJs</a> custom transport for <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview" target="_blank">Azure Service Bus</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~niur" target="_blank"><img src="https://img.shields.io/npm/v/@niur/nestjs-service-bus.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~niur" target="_blank"><img src="https://img.shields.io/npm/l/@niur/nestjs-service-bus.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~niur" target="_blank"><img src="https://img.shields.io/npm/dm/@niur/nestjs-service-bus.svg" alt="NPM Downloads" /></a>
+<p align="center">
+  <a href="https://nestjs.com" target="_blank">NestJs</a> custom transport for <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview" target="_blank">Azure Service Bus</a>.
+</p>
+    
+ <p align="center">
+<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/v/@flp/nestjs-azure-service-bus" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/l/@flp/nestjs-azure-service-bus" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/dm/@flp/nestjs-azure-service-bus" alt="NPM Downloads" /></a>
 </p>
 
 ## Description
 
-<a href="https://azure.microsoft.com/en-us/services/service-bus/#overview" target="_blank">Azure Service Bus</a> is a fully managed enterprise message broker with message queues and publish-subscribe topics (in a namespace). Service Bus is used to decouple applications and services from each other, providing the following benefits:
+<a href="https://azure.microsoft.com/en-us/products/service-bus/#overview" target="_blank">Azure Service Bus</a> is a fully managed enterprise message broker with message queues and publish-subscribe topics (in a namespace). Service Bus is used to decouple applications and services from each other, providing the following benefits:
 
 - Load-balancing work across competing workers
 - Safely routing and transferring data and control across service and application boundaries
@@ -88,6 +91,7 @@ The <strong>Azure Service Bus</strong> strategy exposes the properties described
   imports: [
     AzureServiceBusModule.forRootAsync([
       {
+        inject: [ConfigService],
         name: SB_CLIENT,
         useFactory: (configService: ConfigService) => ({
           connectionString: configService.get('connectionString'),
@@ -111,17 +115,31 @@ constructor(
 
 ```
 
+#### Custom Client
+
+Same interface `AzureServiceBusModule` but, `CustomAzureServiceBusClient` implements `ServiceBusClientProxy` to send message.
+This is simple client and not use `ClientProxy`
+
+```typescript
+  constructor(
+    @Inject(SB_CLIENT) private readonly sbClientProxy: AzureServiceBusClientProxy,
+  ) {}
+```
+
 ##### Producer
 
 Event-based
 
 ```typescript
+// queue/topic properties
 const pattern = {
-  name: 'sample-topic', // topic name
-  options: {},
-}; // queue name
+  name: 'sample-queueOrTopic', // queue/topic name
+  options: {}, //OperationOptions
+};
+// payload message
 const data = {
   body: 'Example message',
+  //options message (subject, ... etc)
 };
 
 this.sbClient.send(pattern, data).subscribe((response) => {
@@ -132,14 +150,31 @@ this.sbClient.send(pattern, data).subscribe((response) => {
 Message-based
 
 ```typescript
+// queue/topic properties
 const pattern = {
-  name: 'sample-topic', // topic name
-  options: {},
-}; // queue name
+  name: 'sample-queueOrTopic', // queue/topic name
+  options: {}, //OperationOptions
+};
+// payload message
 const data = {
   body: 'Example message',
+  //some options message (subject, ... etc)
 };
 this.sbClient.emit(pattern, data);
+```
+
+Topic-Message-based
+
+```typescript
+// topic
+const topic = 'TOPIC';
+// payload message
+const data = {
+  subscription: 'postsubscription', //equivalent to subject
+  body: 'Example message',
+  //some options message (reply, to, ... etc)
+};
+this.sbClient.sendTopicSubscription(topic, data);
 ```
 
 ##### Consumer
@@ -149,10 +184,10 @@ To access the original Azure Service Bus message use the `Subscription` decorato
 ```typescript
 
 @Subscription({
-    topic: 'sample-topic',
-    subscription: 'sample-subscription',
-    receiveMode: 'peekLock', // or receiveAndDelete
-  })
+  topic: 'sample-queueOrTopic',
+  subscription: 'sample-subscription',
+  receiveMode: 'peekLock', // or receiveAndDelete
+})
 getMessages(@Payload() message: ServiceBusMessage) {
   console.log(message);
 }
@@ -193,9 +228,8 @@ Options
 
 ## Stay in touch
 
-- Author - [Niurmiguel](https://github.com/Niurmiguel)
+- Author - [Filipe Campos](https://github.com/filipercampos)
 
 ## License
 
 Nestjs Azure Service Bus is [MIT licensed](LICENSE).
-# nestjs-azure-service-bus
