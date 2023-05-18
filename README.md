@@ -10,9 +10,9 @@
 </p>
     
  <p align="center">
-<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/v/@flp/nestjs-azure-service-bus" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/l/@flp/nestjs-azure-service-bus" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/dm/@flp/nestjs-azure-service-bus" alt="NPM Downloads" /></a>
+<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/v/@flpc/nestjs-azure-service-bus" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/l/@flpc/nestjs-azure-service-bus" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~filipecampos" target="_blank"><img src="https://img.shields.io/npm/dm/@flpc/nestjs-azure-service-bus" alt="NPM Downloads" /></a>
 </p>
 
 ## Description
@@ -28,7 +28,7 @@
 To start building Azure Service Bus-based microservices, first install the required packages:
 
 ```bash
-$ npm i --save @azure/service-bus @flp/nestjs-azure-service-bus
+$ npm i --save @azure/service-bus @flpc/nestjs-azure-service-bus
 ```
 
 #### Overview

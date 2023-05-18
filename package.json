@@ -1,5 +1,5 @@
 {
-  "name": "@flp/nestjs-azure-service-bus",
+  "name": "@flpc/nestjs-azure-service-bus",
   "version": "1.0.0",
   "description": "NestJS Azure Service Bus Microservice Transport & Server",
   "main": "dist/index",
@@ -8,15 +8,16 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
+    "prepublish": "npm run build",
     "build": "tsc",
     "compile": "tsc",
-    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/filipercampos/nestjs-azure-service-bus.git"
   },
+  "homepage": "https://github.com/filipercampos/nestjs-azure-service-bus#READM.md",
   "peerDependencies": {
     "@nestjs/common": "^9.3.7",
     "@nestjs/core": "^9.3.7",
