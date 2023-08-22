@@ -1,4 +1,5 @@
-import { SubscribeOptions } from "@azure/service-bus";
+import { SubscribeOptions } from '@azure/service-bus';
+import { ReceiveMode } from '../common/enums';
 
 export interface SbSubscriberMetadataOptions {
   /**
@@ -24,13 +25,13 @@ export interface SbSubscriberMetadataOptions {
    * https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock
    *
    */
-  receiveMode: "peekLock" | "receiveAndDelete";
+  receiveMode?: ReceiveMode;
   /**
    * Represents the sub queue that is applicable for any queue or subscription.
    * Valid values are "deadLetter" and "transferDeadLetter". To learn more about dead letter queues,
    * see https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues
    */
-  subQueueType?: "deadLetter" | "transferDeadLetter";
+  subQueueType?: 'deadLetter' | 'transferDeadLetter';
   /**
    * The maximum duration in milliseconds until which the lock on the message will be renewed
    * by the sdk automatically. This auto renewal stops once the message is settled.

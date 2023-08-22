@@ -12,6 +12,8 @@ import {
 } from '@nestjs/microservices';
 
 import { AzureServiceBusContext } from '../azure-service-bus.context';
+import { ServiceBusAdminClient } from '../client/service-bus-admin.client';
+import { ReceiveMode } from '../common/enums';
 import { AzureServiceBusOptions } from '../interfaces';
 import { SbSubscriberMetadata } from '../metadata';
 
@@ -20,6 +22,7 @@ export class AzureServiceBusServer
   implements CustomTransportStrategy
 {
   private sbClient: ServiceBusClient;
+  private sbAdminClient: ServiceBusAdminClient;
 
   constructor(protected readonly options: AzureServiceBusOptions) {
     super();
@@ -57,8 +60,13 @@ export class AzureServiceBusServer
         },
       }: SbSubscriberMetadata = JSON.parse(pattern);
 
+      //ensure topic
+      await this.sbAdminClient.createTopic(topic);
+      //create subscription and add rule
+      await this.sbAdminClient.createSubscription(topic, name);
+      //create receiver for messages
       const receiver = this.sbClient.createReceiver(topic, name, {
-        receiveMode,
+        receiveMode: receiveMode ?? ReceiveMode.peekLock,
         subQueueType,
         skipParsingBodyAsJson,
       });
@@ -120,6 +128,7 @@ export class AzureServiceBusServer
 
   createServiceBusClient(): ServiceBusClient {
     const { connectionString, options } = this.options;
+    this.sbAdminClient = new ServiceBusAdminClient(this.options);
     return new ServiceBusClient(connectionString, options);
   }
 

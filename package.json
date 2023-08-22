@@ -1,6 +1,6 @@
 {
   "name": "@flpc/nestjs-azure-service-bus",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NestJS Azure Service Bus Microservice Transport & Server",
   "main": "dist/index",
   "types": "dist/index",
